@@ -16,34 +16,30 @@ class TestNominaDB(unittest.TestCase):
     relacionadas con la gestión de nóminas en la base de datos, incluyendo validaciones
     y manejo de errores.
     """
-    
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         """Configura el ambiente de pruebas antes de cada test.
-        
         - Limpia cualquier dato previo eliminando el empleado de prueba si existe
-        - Inicializa los objetos de nómina que se usarán en las pruebas
         """
-        # Intentar eliminar el empleado si existe, ignorar si no existe
-        try:
-            NominaController.EliminarEmpleadoPorCedula("123456789")
-        except EmpleadoNoExistenteError:
-            # Si el empleado no existe, no hacemos nada
-            pass
 
-        # Nómina con datos válidos para pruebas básicas
+        NominaController.BorrarTabla()
+        NominaController.CrearTablas()
+        # Intentar eliminar el empleado si existe, ignorar si no existe
+
+    def setUp(self):
         self.nomina = Nomina(
-            cedula_empleado="123456789",
-            nombre_empleado="Juan",
-            empleado_apellido="Pérez",
-            cargo="Empleado nuevo",
-            salario_base=3500000,
-            horas_extras=10,
-            tipo_hora_extra="Diurnas",
-            horas_extras_adicionales=5,
-            tipo_hora_extra_adicional="Nocturnas",
-            prestamo=50000,
-            cuotas=3,
-            tasa_interes=6
+            cedula_empleado = "123456789",
+            nombre_empleado = "Juan",
+            empleado_apellido = "Pérez",
+            cargo = "Empleado nuevo",
+            salario_base = 3500000,
+            horas_extras = 10,
+            tipo_hora_extra = "Diurnas",
+            horas_extras_adicionales = 5,
+            tipo_hora_extra_adicional = "Nocturnas",
+            prestamo = 50000,
+            cuotas = 3,
+            tasa_interes = 6
         )
 
         # Nómina con datos válidos para pruebas de modificación
@@ -220,3 +216,6 @@ class TestNominaDB(unittest.TestCase):
         NominaController.InsertarNomina(self.nomina)
         with self.assertRaises(NombreInvalidoError):
             NominaController.ModificarNomina(self.nomina_nombre_no_valido)
+
+if __name__ == '__main__':
+    unittest.main()

@@ -24,9 +24,29 @@ class TestNominaDB(unittest.TestCase):
 
         NominaController.BorrarTablas()
         NominaController.CrearTablas()
+        try:
+            NominaController.EliminarEmpleadoPorCedula("123456789")
+        except EmpleadoNoExistenteError:
+            # Si el empleado no existe, no hacemos nada
+            pass
 
     def setUp(self):
         self.nomina = Nomina(
+            cedula_empleado = "123456789",
+            nombre_empleado = "Juan",
+            empleado_apellido = "Pérez",
+            cargo = "Empleado nuevo",
+            salario_base = 3500000,
+            horas_extras = 10,
+            tipo_hora_extra = "Diurnas",
+            horas_extras_adicionales = 5,
+            tipo_hora_extra_adicional = "Nocturnas",
+            prestamo = 50000,
+            cuotas = 3,
+            tasa_interes = 6
+        )
+
+        self.nomina_existente = Nomina(
             cedula_empleado = "123456789",
             nombre_empleado = "Juan",
             empleado_apellido = "Pérez",
@@ -59,7 +79,7 @@ class TestNominaDB(unittest.TestCase):
 
         # Nómina con nombre inválido para pruebas de validación
         self.nomina_nombre_no_valido = Nomina(
-            cedula_empleado="123456789",
+            cedula_empleado="13456789",
             nombre_empleado="1212",
             empleado_apellido="Pérez",
             cargo="Empleado Antiguo",
@@ -125,7 +145,7 @@ class TestNominaDB(unittest.TestCase):
         """
         NominaController.InsertarNomina(self.nomina)
         with self.assertRaises(EmpleadoExistenteError):
-            NominaController.InsertarNomina(self.nomina)
+            NominaController.InsertarNomina(self.nomina_existente)
 
     def test_eliminar_empleado_existente(self):
         """Prueba la eliminación exitosa de un empleado existente.

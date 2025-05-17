@@ -8,6 +8,7 @@ env.bak/
 venv.bak/
 .vscode
 SecretConfig.py
+correcciones.txt
 
 # Byte-compiled / optimized / DLL files
 

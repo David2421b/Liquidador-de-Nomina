@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+</head>
+<body>
+    <form method = "POST", action = "/registrar">
+    <label for="cedula">Cédula:</label>
+    <input type = "text" id = "cedula" name = "cedula" required><br><br>
+
+    <label for="nombres">Nombres:</label>
+    <input type="text" id="nombres" name="nombres" required><br><br>
+
+    <label for="apellidos">Apellidos:</label>
+    <input type="text" id="apellidos" name="apellidos" required><br><br>
+
+    <label for="cargo">Cargo:</label>
+    <select id="cargo" name="cargo" required>
+        <option value="1">Empleado nuevo</option>
+        <option value="2">Empleado antiguo</option>
+        <option value="3">Administrador</option>
+    </select><br><br>
+
+    <label for="salario_base">Salario Base:</label>
+    <input type="number" id="salario_base" name="salario_base" step="0.01" required><br><br>
+
+    <label for="horas_extras">Horas Extras:</label>
+    <input type="number" id="horas_extras" name="horas_extras"><br><br>
+
+    <label for="tipo_hora_extra">Tipo de Hora Extra:</label>
+    <select id="tipo_hora_extra" name="tipo_hora_extra">
+        <option value="1">Diurnas</option>
+        <option value="2">Nocturnas</option>
+        <option value="3">Festivas</option>
+    </select><br><br>
+
+    <label for="horas_extras_adicionales">Horas Extras Adicionales:</label>
+    <input type="number" id="horas_extras_adicionales" name="horas_extras_adicionales"><br><br>
+
+    <label for="tipo_hora_extra_adicional">Tipo de Hora Extra Adicional:</label>
+    <select id="tipo_hora_extra_adicional" name="tipo_hora_extra_adicional">
+        <option value="1">Diurnas</option>
+        <option value="2">Nocturnas</option>
+        <option value="3">Festivas</option>
+    </select><br><br>
+
+    <label for="prestamo">Préstamo:</label>
+    <input type="number" id="prestamo" name="prestamo" step="0.01"><br><br>
+
+    <label for="cuotas">Cuotas:</label>
+    <input type="number" id="cuotas" name="cuotas"><br><br>
+
+    <label for="tasa_interes_anual">Tasa de Interés Anual (%):</label>
+    <input type="number" id="tasa_interes_anual" name="tasa_interes_anual" step="0.01"><br><br>
+
+    <button type="submit">Enviar</button>
+</form>
+
+</body>
+</html>

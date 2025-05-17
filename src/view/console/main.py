@@ -1,4 +1,4 @@
-import sys 
+import sys
 sys.path.append("src")
 from model.calculo_nomina import Nomina, SALARIO_MINIMO_LEGAL_VIGENTE, MAXIMO_HORAS_EXTRA_LEGALES_PERMITIDAS, SIN_HORAS_EXTRAS, SIN_PRESTAMO
 from model.excepciones import *

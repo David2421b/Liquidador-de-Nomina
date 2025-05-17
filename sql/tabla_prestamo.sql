@@ -6,6 +6,6 @@ create table if not exists prestamos (
   fecha_inicio date not null default current_date,
   tasa_interes float not null,
   primary key(id_prestamo),
-  foreign key (id_empleado) references empleados(cedula)
+  foreign key (id_empleado) references empleados(cedula) on Cascade
 );
 

@@ -5,7 +5,7 @@ create table if not exists empleados(
   cargo int not null,
   salario_base float not null,
   primary key(cedula),
-  foreign key (cargo) references cargos(id) on Cascade
+  foreign key (cargo) references cargos(id)
 );
 
 

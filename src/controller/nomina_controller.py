@@ -91,14 +91,61 @@ class NominaController:
         NominaController.InsertarTipoHoras()
 
     @staticmethod
-    def BorrarTabla():
+    def BorrarTablaCargos():
+        cursor = NominaController.Obtener_cursor()
+
+        with open("sql/borrar_cargos.sql", "r") as sql_file:
+            consulta = sql_file.read()
+        cursor.execute(consulta)
+        cursor.connection.commit()
+        
+
+    @staticmethod
+    def BorrarTablaEmpleados():
         cursor = NominaController.Obtener_cursor()
 
         with open("sql/borrar_empleados.sql", "r") as sql_file:
             consulta = sql_file.read()
         cursor.execute(consulta)
         cursor.connection.commit()
+    
+    @staticmethod
+    def BorrarTablaTipoHoraExtra():
+        cursor = NominaController.Obtener_cursor()
 
+        with open("sql/borrar_tipo_horas_extra.sql", "r") as sql_file:
+            consulta = sql_file.read()
+        cursor.execute(consulta)
+        cursor.connection.commit()
+
+    @staticmethod
+    def BorrarTablaHorasExtra():
+        cursor = NominaController.Obtener_cursor()
+
+        with open("sql/borrar_horas_extra.sql", "r") as sql_file:
+            consulta = sql_file.read()
+        cursor.execute(consulta)
+        cursor.connection.commit()
+        
+
+    @staticmethod
+    def BorrarTablaPrestamos():
+        cursor = NominaController.Obtener_cursor()
+
+        with open("sql/borrar_prestamos.sql", "r") as sql_file:
+            consulta = sql_file.read()
+        cursor.execute(consulta)
+        cursor.connection.commit()
+    
+    @staticmethod
+    def BorrarTablas():
+        NominaController.BorrarTablaPrestamos()
+        NominaController.BorrarTablaHorasExtra()
+        NominaController.BorrarTablaTipoHoraExtra()
+        NominaController.BorrarTablaEmpleados()
+        NominaController.BorrarTablaCargos()
+    
+    @staticmethod
     def InsertarCargos():
         cursor = NominaController.Obtener_cursor()
         
@@ -114,8 +161,6 @@ class NominaController:
             consulta = sql_file.read()
         cursor.execute(consulta)
         cursor.connection.commit()
-
-
 
     @staticmethod
     def InsertarNomina(nomina: Nomina):

@@ -1,1 +1,1 @@
-drop table if exists tabla_empleados Cascade;
+drop table if exists empleados;

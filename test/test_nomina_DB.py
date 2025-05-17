@@ -22,9 +22,8 @@ class TestNominaDB(unittest.TestCase):
         - Limpia cualquier dato previo eliminando el empleado de prueba si existe
         """
 
-        NominaController.BorrarTabla()
+        NominaController.BorrarTablas()
         NominaController.CrearTablas()
-        # Intentar eliminar el empleado si existe, ignorar si no existe
 
     def setUp(self):
         self.nomina = Nomina(

@@ -10,11 +10,11 @@ import SecretConfig
 class NominaController:
     # Consultas SQL como constantes de clase
     CONSULTA_DATOS_EMPLEADO = """
-        SELECT 
-            e.cedula, 
-            e.nombres, 
-            e.apellidos, 
-            c.cargo_empleado, 
+        SELECT
+            e.cedula,
+            e.nombres,
+            e.apellidos,
+            c.cargo_empleado,
             e.salario_base
         FROM empleados e
         INNER JOIN cargos c ON e.cargo = c.id
@@ -35,14 +35,58 @@ class NominaController:
         ORDER BY fecha_inicio DESC
         LIMIT 1
     """
-
     @staticmethod
-    def CrearTabla():
+    def CrearTablaCargos():
         cursor = NominaController.Obtener_cursor()
+        
+        with open("sql/tabla_cargos.sql", "r") as sql_file:
+            consulta = sql_file.read()
+        cursor.execute(consulta)
+        cursor.connection.commit()
+    
+    @staticmethod
+    def CrearTablaEmpleados():
+        cursor = NominaController.Obtener_cursor()
+        
         with open("sql/tabla_empleados.sql", "r") as sql_file:
             consulta = sql_file.read()
         cursor.execute(consulta)
         cursor.connection.commit()
+    
+    @staticmethod
+    def CrearTablaTipoHoraExtra():
+        cursor = NominaController.Obtener_cursor()
+        
+        with open("sql/tabla_tipo_hora_extra.sql", "r") as sql_file:
+            consulta = sql_file.read()
+        cursor.execute(consulta)
+        cursor.connection.commit()
+    
+    @staticmethod
+    def CrearTablaHorasExtras():
+        cursor = NominaController.Obtener_cursor()
+        
+        with open("sql/tabla_horas_extra.sql", "r") as sql_file:
+            consulta = sql_file.read()
+        cursor.execute(consulta)
+        cursor.connection.commit()
+
+    @staticmethod
+    def CrearTablaPrestamos():
+        cursor = NominaController.Obtener_cursor()
+        
+        with open("sql/tabla_prestamo.sql", "r") as sql_file:
+            consulta = sql_file.read()
+        cursor.execute(consulta)
+        cursor.connection.commit()
+    
+    @staticmethod
+    def CrearTablas():
+        NominaController.CrearTablaCargos()
+        NominaController.CrearTablaEmpleados()
+        NominaController.CrearTablaTipoHoraExtra()
+        NominaController.CrearTablaHorasExtras()
+        NominaController.CrearTablaPrestamos()
 
     @staticmethod
     def BorrarTabla():
@@ -51,7 +95,7 @@ class NominaController:
             consulta = sql_file.read()
         cursor.execute(consulta)
         cursor.connection.commit()
-           
+
     @staticmethod
     def InsertarNomina(nomina: Nomina):
         """
@@ -443,9 +487,6 @@ class NominaController:
             raise e
         finally:
             cursor.connection.close()
-          
-    
-    
 
     @staticmethod
     def Obtener_cursor():
@@ -460,3 +501,5 @@ class NominaController:
         return cursor
 
 
+if __name__ == "__main__":
+    NominaController.CrearTablas()

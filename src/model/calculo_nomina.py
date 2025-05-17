@@ -1,8 +1,8 @@
 import sys
 sys.path.append("src")
 
-from model.excepciones import * 
-from model.clase_empleado import Empleado 
+from model.excepciones import *
+from model.clase_empleado import Empleado
 
 # Constantes
 SALARIO_MINIMO_LEGAL_VIGENTE = 1423500  # Salario mínimo legal vigente en 2025

@@ -87,14 +87,35 @@ class NominaController:
         NominaController.CrearTablaTipoHoraExtra()
         NominaController.CrearTablaHorasExtras()
         NominaController.CrearTablaPrestamos()
+        NominaController.InsertarCargos()
+        NominaController.InsertarTipoHoras()
 
     @staticmethod
     def BorrarTabla():
         cursor = NominaController.Obtener_cursor()
+
         with open("sql/borrar_empleados.sql", "r") as sql_file:
             consulta = sql_file.read()
         cursor.execute(consulta)
         cursor.connection.commit()
+
+    def InsertarCargos():
+        cursor = NominaController.Obtener_cursor()
+        
+        with open("sql/insertar_cargos.sql", "r") as sql_file:
+            consulta = sql_file.read()
+        cursor.execute(consulta)
+        cursor.connection.commit()
+    
+    def InsertarTipoHoras():
+        cursor = NominaController.Obtener_cursor()
+        
+        with open("sql/insertar_tipo_de_horas_extra.sql", "r") as sql_file:
+            consulta = sql_file.read()
+        cursor.execute(consulta)
+        cursor.connection.commit()
+
+
 
     @staticmethod
     def InsertarNomina(nomina: Nomina):
@@ -499,7 +520,3 @@ class NominaController:
         )
         cursor = connection.cursor()
         return cursor
-
-
-if __name__ == "__main__":
-    NominaController.CrearTablas()

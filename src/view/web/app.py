@@ -35,7 +35,11 @@ def registrar():
         prestamo = request.form["prestamo"]
         cuotas = request.form["cuotas"]
         tasa_interese = request.form["tasa_interes_anual"]
-        
+
+        nomina = Nomina(cedula_empleado = cedula, nombre_empleado = nombre, empleado_apellido = apellido, cargo = cargo,
+                        salario_base = salario_base, horas_extras = horas_extra, tipo_hora_extra = tipo_hora_extra,
+                        horas_extras_adicionales = horas_extras_adicionales, tipo_hora_extra_adicional = tipo_hora_extra_adicionales,
+                        prestamo = prestamo, cuotas = cuotas, tasa_interes = tasa_interese)
         return render_template("index.html")
 
 @app.route("/acceder", methods = ["GET", "POST"])

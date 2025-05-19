@@ -35,20 +35,18 @@ def registrar():
         prestamo = float(request.form["prestamo"])
         cuotas = int(request.form["cuotas"])
         tasa_interese = float(request.form["tasa_interes_anual"])
-        print("entre1")
 
         nomina = Nomina(cedula_empleado = cedula, nombre_empleado = nombre, empleado_apellido = apellido, cargo = cargo,
                         salario_base = salario_base, horas_extras = horas_extra, tipo_hora_extra = tipo_hora_extra,
                         horas_extras_adicionales = horas_extras_adicionales, tipo_hora_extra_adicional = tipo_hora_extra_adicional,
                         prestamo = prestamo, cuotas = cuotas, tasa_interes = tasa_interese)
         
-        NominaController.InsertarNomina(nomina)
         try:
-            print("entre2")
+            NominaController.InsertarNomina(nomina)
             return render_template("index.html", mensaje = f"el usuarios: '{nombre}' se ha registrado con exito")
         
         except Exception as e:
-            return render_template("registrar.html", mensaje = f"el usuario: '{nombre}' no se registro con exito debido a: {str(e)}")
+            return render_template("registrar.html", mensaje = f"el usuario: '{nombre}' no se registro con exito debido a: '{str(e)}'")
 
 @app.route("/acceder", methods = ["GET", "POST"])
 def acceder():

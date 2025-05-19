@@ -11,10 +11,9 @@ from model.calculo_nomina import Nomina
 
 app = Flask(__name__)
 
-
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("registrar.html")
 
 @app.route("/pagina_registro")
 def pagina_registrar():
@@ -42,23 +41,58 @@ def registrar():
                         prestamo = prestamo, cuotas = cuotas, tasa_interes = tasa_interese)
         
         try:
-            NominaController.InsertarNomina(nomina)
-            return render_template("index.html", mensaje = f"el usuarios: '{nombre}' se ha registrado con exito")
+            # NominaController.InsertarNomina(nomina)
+            salario_neto_obtenido = nomina.calcular()
+            bonifiacion_obetenido = nomina.calcular_bonificacion()
+            valor_horas_extra_obtenido = nomina.calcular_valor_hora_extra(nomina.horas_extras, nomina.tipo_hora_extra)
+            valor_hora_extra_adicional_obtenida = nomina.calcular_valor_hora_extra(nomina.horas_extras_adicionales, nomina.tipo_hora_extra_adicional)
+            total_horas_extra_obtenido = (valor_horas_extra_obtenido * nomina.horas_extras) + (valor_hora_extra_adicional_obtenida * nomina.horas_extras_adicionales)
+
+            return render_template("panel.html", cedula = cedula, nombre = nombre, apellido = apellido, cargo = cargo,
+                                                    salario_base = salario_base, bonificacion_cargo = bonifiacion_obetenido,
+                                                    horas_extra = horas_extra, tipo_horas_extra = tipo_hora_extra,
+                                                    horas_extra_adicionales = horas_extras_adicionales,
+                                                    tipo_horas_extra_adicional = tipo_hora_extra_adicional,
+                                                    valor_hora_extra = total_horas_extra_obtenido, prestamo = prestamo,
+                                                    cuotas = cuotas, tasa_interes = tasa_interese,
+                                                    salario_neto = salario_neto_obtenido)
         
         except Exception as e:
             return render_template("registrar.html", mensaje = f"el usuario: '{nombre}' no se registro con exito debido a: '{str(e)}'")
 
-@app.route("/acceder", methods = ["GET", "POST"])
-def acceder():
-    if request.method == "POST":
-        cedula = request.form["cedula"]
-        try:
-            usuario_buscado = NominaController.ObtenerEmpleadoPorCedula(cedula)
-            if usuario_buscado and usuario_buscado["cedula"] == cedula:
-                return render_template("panel.html")
+# @app.route("/acceder", methods = ["GET", "POST"])
+# def acceder():
+#     if request.method == "POST":
+#         cedula = request.form["cedula"]
+#         try:
+#             usuario_buscado = NominaController.ObtenerEmpleadoPorCedula(cedula)
             
-        except Exception as e:
-                return render_template("index.html", mensaje = f"La cedula: {cedula} no se encuentra registrada")
+#             if usuario_buscado and usuario_buscado["cedula"] == cedula:
+
+#                 # nomina = Nomina(usuario_buscado["cedula"], usuario_buscado["nombres"], usuario_buscado["apellidos"], usuario_buscado["cargo"], float(usuario_buscado["salario_base"]),
+#                 #                (usuario_buscado["horas_extras"][0]["numero_de_horas"]), usuario_buscado["horas_extras"][0]["tipotipo_hora_extra_h"], 
+#                 #                prestamo = usuario_buscado["prestamo"]["monto"], cuotas = )
+
+#                 salario_neto_obtenido = nomina.calcular()
+#                 bonifiacion_obetenido = nomina.calcular_bonificacion()
+#                 valor_horas_extra_obtenido = nomina.calcular_valor_hora_extra(nomina.horas_extras, nomina.tipo_hora_extra)
+#                 valor_hora_extra_adicional_obtenida = nomina.calcular_valor_hora_extra(nomina.horas_extras_adicionales, nomina.tipo_hora_extra_adicional)
+#                 total_horas_extra_obtenido = (valor_horas_extra_obtenido * nomina.horas_extras) + (valor_hora_extra_adicional_obtenida * nomina.horas_extras_adicionales)
+
+
+#                 return render_template("panel.html", cedula = usuario_buscado["cedula"], nombre = usuario_buscado["nombres"],
+#                                                     apellido = usuario_buscado["apellidos"], cargo = usuario_buscado["cargo"],
+#                                                     salario_base = usuario_buscado["salario_base"], bonificacion = bonifiacion_obetenido,
+#                                                     horas_extra = usuario_buscado["horas_extras"], tipo_horas_extra = usuario_buscado["tipo_hora_extra"],
+#                                                     horas_extra_adicionales = usuario_buscado["horas_extras_adicionales"],
+#                                                     tipo_horas_extra_adicional = usuario_buscado["tipo_hora_extra_adicional"],
+#                                                     valor_hora_extra = total_horas_extra_obtenido, prestamo = usuario_buscado["prestamo"],
+#                                                     cuotas = usuario_buscado["cuotas"], tasa_interes = usuario_buscado["tasa_interes_anual"],
+#                                                     salario_neto = salario_neto_obtenido)
+            
+#         except Exception as e:
+#                 # return render_template("index.html", mensaje = f"La cedula: {cedula} no se encuentra registrada")
+#                 return render_template("index.html", mensaje = f"{e}")
 
 
 if __name__ == "__main__":

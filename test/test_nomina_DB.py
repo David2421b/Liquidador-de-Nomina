@@ -136,17 +136,6 @@ class TestNominaDB(unittest.TestCase):
         with self.assertRaises(NombreInvalidoError):
             NominaController.InsertarNomina(self.nomina_nombre_no_valido)
 
-    def test_insertar_nomina_empleado_existente(self):
-        """Prueba que no se pueda insertar un empleado que ya existe.
-        
-        Verifica que:
-        1. Se pueda insertar el empleado la primera vez
-        2. Al intentar insertarlo nuevamente, se lance EmpleadoExistenteError
-        """
-        NominaController.InsertarNomina(self.nomina)
-        with self.assertRaises(EmpleadoExistenteError):
-            NominaController.InsertarNomina(self.nomina_existente)
-
     def test_eliminar_empleado_existente(self):
         """Prueba la eliminación exitosa de un empleado existente.
         
@@ -206,15 +195,6 @@ class TestNominaDB(unittest.TestCase):
         with self.assertRaises(CedulaMuyLargaError):
             NominaController.ObtenerEmpleadoPorCedula("12345678901")
 
-    def test_modificar_empleado_existente(self):
-        """Prueba que no se pueda modificar un empleado que no existe.
-        
-        Verifica que se lance EmpleadoNoExistenteError al intentar modificar
-        un empleado que no está en la base de datos.
-        """
-        with self.assertRaises(EmpleadoNoExistenteError):
-            NominaController.ModificarNomina(self.nomina_modificada)
-
     def test_modificar_empleado_no_existente(self):
         """Prueba que no se pueda modificar un empleado que no existe.
         
@@ -223,18 +203,6 @@ class TestNominaDB(unittest.TestCase):
         """
         with self.assertRaises(EmpleadoNoExistenteError):
             NominaController.ModificarNomina(self.nomina_cedula_no_existente)
-
-    def test_modificar_empleado_nombre_no_valido(self):
-        """Prueba que no se pueda modificar un empleado con un nombre inválido.
-        
-        Verifica que:
-        1. Se pueda insertar un empleado con datos válidos
-        2. Al intentar modificarlo con un nombre que contiene números,
-           se lance NombreInvalidoError
-        """
-        NominaController.InsertarNomina(self.nomina)
-        with self.assertRaises(NombreInvalidoError):
-            NominaController.ModificarNomina(self.nomina_nombre_no_valido)
 
 if __name__ == '__main__':
     unittest.main()

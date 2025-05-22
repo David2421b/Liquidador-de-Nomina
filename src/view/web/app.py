@@ -51,7 +51,7 @@ def registrar():
             valor_hora_extra_adicional_obtenida = nomina.calcular_valor_hora_extra(nomina.horas_extras_adicionales, nomina.tipo_hora_extra_adicional)
             total_horas_extra_obtenido = (valor_horas_extra_obtenido * nomina.horas_extras) + (valor_hora_extra_adicional_obtenida * nomina.horas_extras_adicionales)
 
-            datos_obtenidos = DatosObtenidos(cedula, salario_neto_obtenido, bonifiacion_obetenido, valor_horas_extra_obtenido)
+            datos_obtenidos = DatosObtenidos(cedula, salario_neto_obtenido, bonifiacion_obetenido, total_horas_extra_obtenido)
             NominaController.InsertarDatosObtenidos(datos_obtenidos)
 
             return render_template("index.html", mensaje = "Usuario registrado con exito")
@@ -67,19 +67,17 @@ def acceder():
         try:
             usuario_buscado = NominaController.ObtenerEmpleadoPorCedula(cedula)
             datos_usuario_buscados = NominaController.ObtenerDatosExtraEmpleado(cedula)
-            
-            if usuario_buscado and usuario_buscado["cedula"] == cedula:
-                return render_template("panel.html")
+            print(datos_usuario_buscados)
+            if usuario_buscado["cedula"] == cedula:
+                # return render_template("panel.html")
 
-                # return render_template("panel.html", cedula = usuario_buscado["cedula"], nombre = usuario_buscado["nombres"],
-                #                                     apellido = usuario_buscado["apellidos"], cargo = usuario_buscado["cargo"],
-                #                                     salario_base = usuario_buscado["salario_base"], bonificacion = datos_usuario_buscados.bonificacion,
-                #                                     horas_extra = usuario_buscado["horas_extras"], tipo_horas_extra = usuario_buscado["tipo_hora_extra"],
-                #                                     horas_extra_adicionales = usuario_buscado["horas_extras_adicionales"],
-                #                                     tipo_horas_extra_adicional = usuario_buscado["tipo_hora_extra_adicional"],
-                #                                     valor_hora_extra = datos_usuario_buscados.valor_hora_extra, prestamo = usuario_buscado["prestamo"],
-                #                                     cuotas = usuario_buscado["cuotas"], tasa_interes = usuario_buscado["tasa_interes_anual"],
-                #                                     salario_neto = datos_usuario_buscados.salario_neto)
+                return render_template("panel.html", cedula = usuario_buscado["cedula"], nombre = usuario_buscado["nombres"],
+                                                    apellido = usuario_buscado["apellidos"], cargo = usuario_buscado["cargo"],
+                                                    salario_base = usuario_buscado["salario_base"], bonificacion = datos_usuario_buscados.bonificacion,
+                                                    horas_extra = usuario_buscado["horas_extras"],
+                                                    valor_hora_extra = datos_usuario_buscados.valor_hora_extra, prestamo = usuario_buscado["prestamo"],
+                                                    cuotas = usuario_buscado["cuotas"], tasa_interes = usuario_buscado["tasa_interes_anual"],
+                                                    salario_neto = datos_usuario_buscados.salario_neto)
             
         except Exception as e:
                 # return render_template("index.html", mensaje = f"La cedula: {cedula} no se encuentra registrada")

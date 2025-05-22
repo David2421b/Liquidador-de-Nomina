@@ -185,9 +185,9 @@ class NominaController:
     def InsertarDatosObtenidos(datos: DatosObtenidos):
         cursor = NominaController.Obtener_cursor()
         try:           
-            cursor.execute("""INSERT INTO datos_obtenidos (cedula, salario_neto, bonificacion, valor_hora_extra)
-                           VALUES(%s, %s, %s, %s)""",
-                           (datos.cedula, datos.salario_neto, datos.bonificacion, datos.valor_hora_extra))
+            cursor.execute("""INSERT INTO datos_obtenidos (cedula, salario_neto, bonificacion, valor_hora_extra, cuotas)
+                           VALUES(%s, %s, %s, %s, %s)""",
+                           (datos.cedula, datos.salario_neto, datos.bonificacion, datos.valor_hora_extra, datos.cuotas))
             cursor.connection.commit()
         except Exception as e:
             cursor.connection.rollback()
@@ -560,7 +560,8 @@ class NominaController:
                 raise EmpleadoNoExistenteError(cedula)
             
             datos_obtenidos = DatosObtenidos(cedula = datos_extra_empleados[0], salario_neto = datos_extra_empleados[1], 
-                                             bonificacion = datos_extra_empleados[2], valor_hora_extra = datos_extra_empleados[3])
+                                             bonificacion = datos_extra_empleados[2], valor_hora_extra = datos_extra_empleados[3], 
+                                             cuotas = datos_extra_empleados[4])
             return datos_obtenidos
         
         except Exception as e:

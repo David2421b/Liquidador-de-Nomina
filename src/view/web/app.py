@@ -51,7 +51,7 @@ def registrar():
             valor_hora_extra_adicional_obtenida = nomina.calcular_valor_hora_extra(nomina.horas_extras_adicionales, nomina.tipo_hora_extra_adicional)
             total_horas_extra_obtenido = (valor_horas_extra_obtenido * nomina.horas_extras) + (valor_hora_extra_adicional_obtenida * nomina.horas_extras_adicionales)
 
-            datos_obtenidos = DatosObtenidos(cedula, salario_neto_obtenido, bonifiacion_obetenido, total_horas_extra_obtenido)
+            datos_obtenidos = DatosObtenidos(cedula, salario_neto_obtenido, bonifiacion_obetenido, total_horas_extra_obtenido, cuotas)
             NominaController.InsertarDatosObtenidos(datos_obtenidos)
 
             return render_template("index.html", mensaje = "Usuario registrado con exito")
@@ -76,7 +76,7 @@ def acceder():
                                                     salario_base = usuario_buscado["salario_base"], bonificacion = datos_usuario_buscados.bonificacion,
                                                     horas_extra = usuario_buscado["horas_extras"],
                                                     valor_hora_extra = datos_usuario_buscados.valor_hora_extra, prestamo = usuario_buscado["prestamo"],
-                                                    cuotas = usuario_buscado["cuotas"], tasa_interes = usuario_buscado["tasa_interes_anual"],
+                                                    cuotas = datos_usuario_buscados.cuotas, tasa_interes = usuario_buscado["tasa_interes_anual"],
                                                     salario_neto = datos_usuario_buscados.salario_neto)
             
         except Exception as e:

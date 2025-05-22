@@ -69,7 +69,6 @@ def acceder():
             datos_usuario_buscados = NominaController.ObtenerDatosExtraEmpleado(cedula)
             print(datos_usuario_buscados)
             if usuario_buscado["cedula"] == cedula:
-                # return render_template("panel.html")
 
                 return render_template("panel.html", cedula = usuario_buscado["cedula"], nombre = usuario_buscado["nombres"],
                                                     apellido = usuario_buscado["apellidos"], cargo = usuario_buscado["cargo"],
@@ -82,7 +81,6 @@ def acceder():
                                                     salario_neto = datos_usuario_buscados.salario_neto)
             
         except Exception as e:
-                # return render_template("index.html", mensaje = f"La cedula: {cedula} no se encuentra registrada")
                 return render_template("index.html", mensaje = f"{e}")
 
 

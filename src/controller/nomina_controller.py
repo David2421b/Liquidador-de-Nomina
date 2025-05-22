@@ -4,6 +4,7 @@ sys.path.append("src")
 
 import psycopg2
 from model.calculo_nomina import Nomina
+from model.clase_datos_obtenidos import DatosObtenidos
 from model.excepciones import *
 import SecretConfig
 
@@ -80,6 +81,14 @@ class NominaController:
         cursor.execute(consulta)
         cursor.connection.commit()
     
+    def CrearTablaDatosObtenidos():
+        cursor = NominaController.Obtener_cursor()
+        
+        with open("sql/tabla_datos_obtenidos.sql", "r") as sql_file:
+            consulta = sql_file.read()
+        cursor.execute(consulta)
+        cursor.connection.commit()
+    
     @staticmethod
     def CrearTablas():
         NominaController.CrearTablaCargos()
@@ -87,6 +96,7 @@ class NominaController:
         NominaController.CrearTablaTipoHoraExtra()
         NominaController.CrearTablaHorasExtras()
         NominaController.CrearTablaPrestamos()
+        NominaController.CrearTablaDatosObtenidos()
         NominaController.InsertarCargos()
         NominaController.InsertarTipoHoras()
 
@@ -161,6 +171,21 @@ class NominaController:
             consulta = sql_file.read()
         cursor.execute(consulta)
         cursor.connection.commit()
+    
+    def InsertarDatosObtenidos(datos: DatosObtenidos):
+        cursor = NominaController.Obtener_cursor()
+        try:
+            cursor.execute("SELECT cedula FROM empleados WHERE cedula = %s", (datos.cedula,))
+            if cursor.fetchone():
+                cursor.connection.rollback()
+                raise EmpleadoExistenteError(datos.cedula)
+            
+            cursor.execute("""INSERT INTO datos_obtenidos (cedula, salario_neto, bonificacion, valor_hora_extra)
+                           VALUES(%s, %s, %s, %s)""",
+                           (datos.cedula, datos.salario_neto, datos.bonificacion, datos.valor_hora_extra))
+        except Exception as e:
+            cursor.connection.rollback()
+            raise e
 
     @staticmethod
     def InsertarNomina(nomina: Nomina):

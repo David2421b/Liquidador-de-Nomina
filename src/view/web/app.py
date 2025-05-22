@@ -73,10 +73,12 @@ def acceder():
 
                 return render_template("panel.html", cedula = usuario_buscado["cedula"], nombre = usuario_buscado["nombres"],
                                                     apellido = usuario_buscado["apellidos"], cargo = usuario_buscado["cargo"],
-                                                    salario_base = usuario_buscado["salario_base"], bonificacion = datos_usuario_buscados.bonificacion,
-                                                    horas_extra = usuario_buscado["horas_extras"],
-                                                    valor_hora_extra = datos_usuario_buscados.valor_hora_extra, prestamo = usuario_buscado["prestamo"],
-                                                    cuotas = datos_usuario_buscados.cuotas, tasa_interes = usuario_buscado["tasa_interes_anual"],
+                                                    salario_base = usuario_buscado["salario_base"], bonificacion_cargo = datos_usuario_buscados.bonificacion,
+                                                    horas_extra = usuario_buscado["horas_extras"][0]["numero_de_horas"], tipo_horas_extra = usuario_buscado["horas_extras"][0]["tipo_hora_extra"],
+                                                    horas_extra_adicionales = usuario_buscado["horas_extras"][1]["numero_de_horas"],
+                                                    tipo_horas_extra_adicional = usuario_buscado["horas_extras"][1]["tipo_hora_extra"],
+                                                    valor_hora_extra = datos_usuario_buscados.valor_hora_extra, prestamo = usuario_buscado["prestamo"]["monto"],
+                                                    cuotas = datos_usuario_buscados.cuotas, tasa_interes = usuario_buscado["prestamo"]["tasa_interes"],
                                                     salario_neto = datos_usuario_buscados.salario_neto)
             
         except Exception as e:

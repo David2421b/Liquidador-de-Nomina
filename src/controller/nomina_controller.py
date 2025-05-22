@@ -535,7 +535,32 @@ class NominaController:
             raise e
         finally:
             cursor.connection.close()
+    
+    @staticmethod
+    def ObtenerDatosExtraEmpleado(cedula) -> DatosObtenidos:
+        cursor = NominaController.Obtener_cursor()
 
+        if not cedula.isdigit():
+            raise CedulaInvalidaError(cedula)
+        if len(cedula) < 8:
+            raise CedulaMuyCortaError(cedula)
+        if len(cedula) > 10:
+            raise CedulaMuyLargaError(cedula)
+        
+        try:
+            cursor.execute(f"select * from datos_obtenidos where cedula = '{cedula}'")
+            datos_extra_empleados = cursor.fetchone()
+            if not datos_extra_empleados:
+                raise EmpleadoNoExistenteError(cedula)
+
+            datos_obtenidos = DatosObtenidos(cedula = datos_extra_empleados[0], salario_neto = datos_extra_empleados[1], 
+                                             bonificacion = datos_extra_empleados[2], valor_hora_extra = datos_extra_empleados[3])
+            return datos_obtenidos
+        
+        except Exception as e:
+            cursor.connection.rollback()
+            raise e
+        
     @staticmethod
     def EliminarEmpleadoPorCedula(cedula):
         """

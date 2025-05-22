@@ -148,10 +148,20 @@ class NominaController:
         cursor.connection.commit()
     
     @staticmethod
+    def BorrarTablaDatosObtenidos():
+        cursor = NominaController.Obtener_cursor()
+
+        with open("sql/borrar_datos_extra.sql", "r") as sql_file:
+            consulta = sql_file.read()
+        cursor.execute(consulta)
+        cursor.connection.commit()
+
+    @staticmethod
     def BorrarTablas():
         NominaController.BorrarTablaPrestamos()
         NominaController.BorrarTablaHorasExtra()
         NominaController.BorrarTablaTipoHoraExtra()
+        NominaController.BorrarTablaDatosObtenidos()
         NominaController.BorrarTablaEmpleados()
         NominaController.BorrarTablaCargos()
     
@@ -176,16 +186,12 @@ class NominaController:
         cursor = NominaController.Obtener_cursor()
         try:
             cursor.execute("SELECT cedula FROM empleados WHERE cedula = %s", (datos.cedula,))
-            if cursor.fetchone():
-                cursor.connection.rollback()
-                raise EmpleadoExistenteError(datos.cedula)
-            
+           
             cursor.execute("""INSERT INTO datos_obtenidos (cedula, salario_neto, bonificacion, valor_hora_extra)
                            VALUES(%s, %s, %s, %s)""",
                            (datos.cedula, datos.salario_neto, datos.bonificacion, datos.valor_hora_extra))
         except Exception as e:
             cursor.connection.rollback()
-            raise e
 
     @staticmethod
     def InsertarNomina(nomina: Nomina):

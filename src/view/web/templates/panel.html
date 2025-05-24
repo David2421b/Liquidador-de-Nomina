@@ -3,76 +3,689 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel</title>
+    <title>Panel de Liquidación</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            --accent-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --surface: #f8fafc;
+            --border: #e2e8f0;
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: var(--primary-gradient);
+        }
+
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(10px, 10px); }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .particle:nth-child(odd) {
+            width: 6px;
+            height: 6px;
+            animation-duration: 6s;
+        }
+
+        .particle:nth-child(even) {
+            width: 4px;
+            height: 4px;
+            animation-duration: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+                opacity: 0.4;
+            }
+            25% {
+                transform: translateY(-30px) translateX(10px) rotate(90deg);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: translateY(-60px) translateX(-10px) rotate(180deg);
+                opacity: 0.6;
+            }
+            75% {
+                transform: translateY(-30px) translateX(-15px) rotate(270deg);
+                opacity: 0.9;
+            }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            animation: slideIn 0.8s ease-out;
+            position: relative;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(0%) translateY(0%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .header-icon {
+            font-size: 64px;
+            display: block;
+            margin-bottom: 20px;
+            animation: bounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .header h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.02em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 50px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-section:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .info-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .info-section:hover::before {
+            transform: scaleX(1);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            font-size: 24px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        .info-row:hover {
+            background: rgba(102, 126, 234, 0.05);
+            margin: 0 -15px;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            flex: 1;
+            font-size: 15px;
+        }
+
+        .info-value {
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: right;
+            flex: 1;
+            font-size: 15px;
+        }
+
+        .salary-highlight {
+            background: var(--secondary-gradient);
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 40px 0;
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .salary-highlight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: slideHighlight 3s ease-in-out infinite;
+        }
+
+        @keyframes slideHighlight {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .salary-highlight .label {
+            font-size: 18px;
+            opacity: 0.95;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .salary-highlight .value {
+            font-size: 42px;
+            font-weight: 900;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            letter-spacing: -0.02em;
+        }
+
+        .actions {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+
+        .btn-back {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-back::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-back:hover::before {
+            left: 100%;
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-back:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+
+
+        /* Status Indicators */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-active {
+            background: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .status-pending {
+            background: rgba(251, 191, 36, 0.1);
+            color: #d97706;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 20px;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+            }
+            
+            .header-icon {
+                font-size: 48px;
+            }
+            
+            .salary-highlight .value {
+                font-size: 32px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .info-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .info-value {
+                text-align: left;
+                font-size: 16px;
+            }
+
+            .btn-back {
+                display: block;
+                margin: 10px auto;
+                width: fit-content;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .info-section {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 25px 15px;
+            }
+            
+            .content {
+                padding: 25px 15px;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text-primary: #f7fafc;
+                --text-secondary: #e2e8f0;
+                --surface: rgba(45, 55, 72, 0.8);
+                --border: rgba(255, 255, 255, 0.1);
+            }
+            
+            .info-section {
+                background: rgba(45, 55, 72, 0.9);
+                color: var(--text-primary);
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
 </head>
 <body>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <tr>
-            <th>Cédula</th>
-            <td> {{cedula}} </td>
-        </tr>
-        <tr>
-            <th>Nombres</th>
-            <td> {{nombre}} </td>
-        </tr>
-        <tr>
-            <th>Apellidos</th>
-            <td> {{apellido}} </td>
-        </tr>
-        <tr>
-            <th>Cargo</th>
-            <td> {{cargo}} </td>
-        </tr>
-        <tr>
-            <th>Salario Base</th>
-            <td>$ {{salario_base}} </td>
-        </tr>
-        <tr>
-            <th>Bonificación por cargo</th>
-            <td>$ {{bonificacion_cargo}} </td>
-        </tr>
-        <tr>
-            <th>Horas Extras</th>
-            <td> {{horas_extra}} </td>
-        </tr>
-        <tr>
-            <th>Tipo de Hora Extra</th>
-            <td>{{tipo_horas_extra}}</td>
-        </tr>
-        <tr>
-            <th>Horas Extras Adicionales</th>
-            <td> {{horas_extra_adicionales}} </td>
-        </tr>
-        <tr>
-            <th>Tipo de Hora Extra Adicional</th>
-            <td> {{tipo_horas_extra_adicional}} </td>
-        </tr>
-        <tr>
-            <th>Valor total de horas extra</th>
-            <td>$ {{valor_hora_extra}} </td>
-        </tr>
-        <tr>
-            <th>Préstamo</th>
-            <td>$ {{prestamo}}</td>
-        </tr>
-        <tr>
-            <th>Cuotas</th>
-            <td> {{cuotas}} </td>
-        </tr>
-        <tr>
-            <th>Tasa de Interés Anual</th>
-            <td> {{tasa_interes}} %</td>
-        </tr>
-        <tr>
-            <th><strong>Salario Neto</strong></th>
-            <td><strong>$ {{salario_neto}}</strong></td>
-        </tr>
-</table>
-<a href="/">
-  <button>Volver</button>
-</a>
+    <div class="animated-bg"></div>
+    
+    <div class="particles">
+        <div class="particle" style="left: 5%; top: 20%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 15%; top: 60%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 25%; top: 80%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 35%; top: 40%; animation-delay: 1.5s;"></div>
+        <div class="particle" style="left: 45%; top: 10%; animation-delay: 0.5s;"></div>
+        <div class="particle" style="left: 55%; top: 70%; animation-delay: 2.5s;"></div>
+        <div class="particle" style="left: 65%; top: 30%; animation-delay: 1.8s;"></div>
+        <div class="particle" style="left: 75%; top: 90%; animation-delay: 0.8s;"></div>
+        <div class="particle" style="left: 85%; top: 50%; animation-delay: 2.2s;"></div>
+        <div class="particle" style="left: 95%; top: 15%; animation-delay: 3s;"></div>
+    </div>
 
+    <div class="container loading">
+        <div class="header">
+            <span class="header-icon">💼</span>
+            <h1>Liquidación de Nómina</h1>
+            <p class="subtitle">Detalle completo de cálculos salariales • <span class="status-indicator status-active">●●● Activo</span></p>
+        </div>
 
+        <div class="content">
+            <div class="info-grid">
+                <!-- Información Personal -->
+                <div class="info-section">
+                    <div class="section-title">
+                        👤 Información Personal
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Cédula</span>
+                        <span class="info-value">{{cedula}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Nombres</span>
+                        <span class="info-value">{{nombre}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Apellidos</span>
+                        <span class="info-value">{{apellido}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Cargo</span>
+                        <span class="info-value">{{cargo}}</span>
+                    </div>
+                </div>
 
+                <!-- Información Salarial -->
+                <div class="info-section">
+                    <div class="section-title">
+                        💰 Información Salarial
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Salario Base</span>
+                        <span class="info-value">$ {{salario_base}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Bonificación por Cargo</span>
+                        <span class="info-value">$ {{bonificacion_cargo}}</span>
+                    </div>
+                </div>
+
+                <!-- Horas Extras -->
+                <div class="info-section">
+                    <div class="section-title">
+                        ⏰ Horas Extras
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Horas Extras</span>
+                        <span class="info-value">{{horas_extra}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Tipo de Hora Extra</span>
+                        <span class="info-value">{{tipo_horas_extra}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Horas Extras Adicionales</span>
+                        <span class="info-value">{{horas_extra_adicionales}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Tipo de Hora Extra Adicional</span>
+                        <span class="info-value">{{tipo_horas_extra_adicional}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Valor Total Horas Extra</span>
+                        <span class="info-value">$ {{valor_hora_extra}}</span>
+                    </div>
+                </div>
+
+                <!-- Información de Préstamo -->
+                <div class="info-section">
+                    <div class="section-title">
+                        🏦 Información de Préstamo
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Préstamo</span>
+                        <span class="info-value">$ {{prestamo}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Cuotas</span>
+                        <span class="info-value">{{cuotas}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Tasa de Interés Anual</span>
+                        <span class="info-value">{{tasa_interes}}%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Salario Neto Destacado -->
+            <div class="salary-highlight">
+                <div class="label">💎 Salario Neto Final</div>
+                <div class="value">$ {{salario_neto}}</div>
+            </div>
+
+            <div class="actions">
+                <a href="/" class="btn-back">
+                    ← Volver al Inicio
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth animations on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.info-section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.animation = `slideIn 0.6s ease-out forwards`;
+                        }, index * 100);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                observer.observe(section);
+            });
+
+            // Add dynamic particles
+            const particlesContainer = document.querySelector('.particles');
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 3 + 's';
+                    particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                    particlesContainer.appendChild(particle);
+                }, i * 500);
+            }
+        });
+
+        // Enhanced hover effects
+        document.querySelectorAll('.info-section').forEach(section => {
+            section.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            section.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Format currency values
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP'
+            }).format(value);
+        }
+    </script>
 </body>
 </html>
+

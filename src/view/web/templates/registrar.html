@@ -3,67 +3,669 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
+    <title>Registro de Empleado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            --accent-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --surface: #f8fafc;
+            --border: #e2e8f0;
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 25px 50px rgba(0, 0, 0, 0.15);
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: var(--primary-gradient);
+        }
+
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(10px, 10px); }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .particle:nth-child(odd) {
+            width: 6px;
+            height: 6px;
+            animation-duration: 6s;
+        }
+
+        .particle:nth-child(even) {
+            width: 4px;
+            height: 4px;
+            animation-duration: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+                opacity: 0.4;
+            }
+            25% {
+                transform: translateY(-30px) translateX(10px) rotate(90deg);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: translateY(-60px) translateX(-10px) rotate(180deg);
+                opacity: 0.6;
+            }
+            75% {
+                transform: translateY(-30px) translateX(-15px) rotate(270deg);
+                opacity: 0.9;
+            }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(0%) translateY(0%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .header-icon {
+            font-size: 64px;
+            display: block;
+            margin-bottom: 20px;
+            animation: bounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .header h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.02em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-container {
+            padding: 50px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-section {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .form-section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            background: white;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: #a0aec0;
+            transform: translateY(-1px);
+        }
+
+        .form-group select {
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            appearance: none;
+        }
+
+        .submit-section {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+            margin-top: 30px;
+        }
+
+        .btn-submit {
+            background: var(--secondary-gradient);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-submit:hover::before {
+            left: 100%;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-submit:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        /* Alert Styles */
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 20px 25px;
+            border-radius: 15px;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            animation: slideInAlert 0.5s ease-out;
+            backdrop-filter: blur(10px);
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, var(--error), #dc2626);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, var(--warning), #d97706);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        @keyframes slideInAlert {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Required field indicator */
+        .required::after {
+            content: " *";
+            color: var(--error);
+            font-weight: bold;
+        }
+
+        /* Loading state */
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-submit.loading::after {
+            content: "";
+            width: 20px;
+            height: 20px;
+            margin-left: 10px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 20px;
+            }
+            
+            .form-container {
+                padding: 30px 20px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+            }
+            
+            .header-icon {
+                font-size: 48px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .form-section {
+                padding: 20px;
+            }
+
+            .alert {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 25px 15px;
+            }
+            
+            .form-container {
+                padding: 25px 15px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="animated-bg"></div>
+    
+    <div class="particles">
+        <div class="particle" style="left: 5%; top: 20%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 15%; top: 60%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 25%; top: 80%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 35%; top: 40%; animation-delay: 1.5s;"></div>
+        <div class="particle" style="left: 45%; top: 10%; animation-delay: 0.5s;"></div>
+        <div class="particle" style="left: 55%; top: 70%; animation-delay: 2.5s;"></div>
+        <div class="particle" style="left: 65%; top: 30%; animation-delay: 1.8s;"></div>
+        <div class="particle" style="left: 75%; top: 90%; animation-delay: 0.8s;"></div>
+        <div class="particle" style="left: 85%; top: 50%; animation-delay: 2.2s;"></div>
+        <div class="particle" style="left: 95%; top: 15%; animation-delay: 3s;"></div>
+    </div>
 
-    {% if mensaje %}
-        <script>
-            alert("{{mensaje}}")
-        </script>
-    {% endif %}
+    <div class="container">
+        <div class="header">
+            <span class="header-icon">👤</span>
+            <h1>Registro de Empleado</h1>
+            <p class="subtitle">Complete la información del nuevo empleado</p>
+        </div>
 
-<form method = "POST" action = "/registrar">
-    <label for="cedula">Cédula:</label>
-    <input type = "text" id = "cedula" name = "cedula" required><br><br>
+        <div class="form-container">
+            <form method="POST" action="/registrar" id="registroForm">
+                <div class="form-grid">
+                    <!-- Información Personal -->
+                    <div class="form-section">
+                        <div class="section-title">
+                            📋 Información Personal
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cedula" class="required">Cédula</label>
+                            <input type="text" id="cedula" name="cedula" required placeholder="Ingrese la cédula">
+                        </div>
 
-    <label for="nombres">Nombres:</label>
-    <input type="text" id="nombres" name="nombres" required><br><br>
+                        <div class="form-group">
+                            <label for="nombres" class="required">Nombres</label>
+                            <input type="text" id="nombres" name="nombres" required placeholder="Nombres completos">
+                        </div>
 
-    <label for="apellidos">Apellidos:</label>
-    <input type="text" id="apellidos" name="apellidos" required><br><br>
+                        <div class="form-group">
+                            <label for="apellidos" class="required">Apellidos</label>
+                            <input type="text" id="apellidos" name="apellidos" required placeholder="Apellidos completos">
+                        </div>
 
-    <label for="cargo">Cargo:</label>
-    <select id="cargo" name="cargo" required>
-        <option value="Empleado nuevo">Empleado nuevo</option>
-        <option value="Empleado antiguo">Empleado antiguo</option>
-        <option value="Administrador">Administrador</option>
-    </select><br><br>
+                        <div class="form-group">
+                            <label for="cargo" class="required">Cargo</label>
+                            <select id="cargo" name="cargo" required>
+                                <option value="">Seleccione un cargo</option>
+                                <option value="Empleado nuevo">Empleado nuevo</option>
+                                <option value="Empleado antiguo">Empleado antiguo</option>
+                                <option value="Administrador">Administrador</option>
+                            </select>
+                        </div>
+                    </div>
 
-    <label for="salario_base">Salario Base:</label>
-    <input type="number" id="salario_base" name="salario_base" step="0.01" required><br><br>
+                    <!-- Información Salarial -->
+                    <div class="form-section">
+                        <div class="section-title">
+                            💰 Información Salarial
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="salario_base" class="required">Salario Base</label>
+                            <input type="number" id="salario_base" name="salario_base" step="0.01" required placeholder="0.00">
+                        </div>
 
-    <label for="horas_extras">Horas Extras:</label>
-    <input type="number" id="horas_extras" name="horas_extras"><br><br>
+                        <div class="form-group">
+                            <label for="horas_extras">Horas Extras</label>
+                            <input type="number" id="horas_extras" name="horas_extras" placeholder="0" min="0">
+                        </div>
 
-    <label for="tipo_hora_extra">Tipo de Hora Extra:</label>
-    <select id="tipo_hora_extra" name="tipo_hora_extra">
-        <option value="Diurnas">Diurnas</option>
-        <option value="Nocturnas">Nocturnas</option>
-        <option value="Festivas">Festivas</option>
-    </select><br><br>
+                        <div class="form-group">
+                            <label for="tipo_hora_extra">Tipo de Hora Extra</label>
+                            <select id="tipo_hora_extra" name="tipo_hora_extra">
+                                <option value="">Seleccione tipo</option>
+                                <option value="Diurnas">Diurnas</option>
+                                <option value="Nocturnas">Nocturnas</option>
+                                <option value="Festivas">Festivas</option>
+                            </select>
+                        </div>
 
-    <label for="horas_extras_adicionales">Horas Extras Adicionales:</label>
-    <input type="number" id="horas_extras_adicionales" name="horas_extras_adicionales"><br><br>
+                        <div class="form-group">
+                            <label for="horas_extras_adicionales">Horas Extras Adicionales</label>
+                            <input type="number" id="horas_extras_adicionales" name="horas_extras_adicionales" placeholder="0" min="0">
+                        </div>
 
-    <label for="tipo_hora_extra_adicional">Tipo de Hora Extra Adicional:</label>
-    <select id="tipo_hora_extra_adicional" name="tipo_hora_extra_adicional">
-        <option value="Diurnas">Diurnas</option>
-        <option value="Nocturnas">Nocturnas</option>
-        <option value="Festivas">Festivas</option>
-    </select><br><br>
+                        <div class="form-group">
+                            <label for="tipo_hora_extra_adicional">Tipo de Hora Extra Adicional</label>
+                            <select id="tipo_hora_extra_adicional" name="tipo_hora_extra_adicional">
+                                <option value="">Seleccione tipo</option>
+                                <option value="Diurnas">Diurnas</option>
+                                <option value="Nocturnas">Nocturnas</option>
+                                <option value="Festivas">Festivas</option>
+                            </select>
+                        </div>
+                    </div>
 
-    <label for="prestamo">Préstamo:</label>
-    <input type="number" id="prestamo" name="prestamo" step="0.01"><br><br>
+                    <!-- Información de Préstamo -->
+                    <div class="form-section">
+                        <div class="section-title">
+                            🏦 Información de Préstamo
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="prestamo">Monto del Préstamo</label>
+                            <input type="number" id="prestamo" name="prestamo" step="0.01" placeholder="0.00" min="0">
+                        </div>
 
-    <label for="cuotas">Cuotas:</label>
-    <input type="number" id="cuotas" name="cuotas"><br><br>
+                        <div class="form-group">
+                            <label for="cuotas">Número de Cuotas</label>
+                            <input type="number" id="cuotas" name="cuotas" placeholder="0" min="1">
+                        </div>
 
-    <label for="tasa_interes_anual">Tasa de Interés Anual (%):</label>
-    <input type="number" id="tasa_interes_anual" name="tasa_interes_anual" step="0.01"><br><br>
+                        <div class="form-group">
+                            <label for="tasa_interes_anual">Tasa de Interés Anual (%)</label>
+                            <input type="number" id="tasa_interes_anual" name="tasa_interes_anual" step="0.01" placeholder="0.00" min="0" max="100">
+                        </div>
+                    </div>
+                </div>
 
-    <button type="submit">Registrar</button>
-</form>
+                <div class="submit-section">
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        ✨ Registrar Empleado
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form validation and enhancement
+            const form = document.getElementById('registroForm');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Real-time validation
+            const requiredFields = form.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                field.addEventListener('blur', validateField);
+                field.addEventListener('input', validateField);
+            });
+
+            function validateField(e) {
+                const field = e.target;
+                if (field.value.trim() === '') {
+                    field.style.borderColor = 'var(--error)';
+                    field.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.1)';
+                } else {
+                    field.style.borderColor = 'var(--success)';
+                    field.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.1)';
+                }
+            }
+
+            // Form submission handling
+            form.addEventListener('submit', function(e) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('loading');
+                submitBtn.textContent = 'Registrando...';
+            });
+
+            // Format number inputs
+            const numberInputs = form.querySelectorAll('input[type="number"]');
+            numberInputs.forEach(input => {
+                input.addEventListener('input', function(e) {
+                    if (this.step === '0.01') {
+                        // Format currency
+                        let value = parseFloat(this.value);
+                        if (!isNaN(value)) {
+                            this.setAttribute('data-formatted', value.toLocaleString('es-CO'));
+                        }
+                    }
+                });
+            });
+
+            // Animate form sections on scroll
+            const sections = document.querySelectorAll('.form-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.animation = `slideIn 0.6s ease-out forwards`;
+                        }, index * 100);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                observer.observe(section);
+            });
+
+            // Dynamic particles
+            const particlesContainer = document.querySelector('.particles');
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 3 + 's';
+                    particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                    particlesContainer.appendChild(particle);
+                }, i * 1000);
+            }
+        });
+    </script>
 </body>
 </html>

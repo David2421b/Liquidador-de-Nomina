@@ -3,20 +3,713 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liquidacion</title>
+    <title>Liquidación de Nómina - Sistema Avanzado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --accent-color: #4ade80;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --shadow-heavy: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .hero-section {
+            display: flex;
+            min-height: calc(100vh - 40px);
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 60px;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .content-left {
+            flex: 1;
+            color: white;
+            padding: 60px 40px;
+            max-width: 600px;
+        }
+
+        .content-left h1 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
+            margin-bottom: 24px;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 50%, #e6f3ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)); }
+            to { filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)); }
+        }
+
+        .content-left .subtitle {
+            font-size: clamp(18px, 2.5vw, 22px);
+            margin-bottom: 40px;
+            opacity: 0.95;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .features {
+            list-style: none;
+            margin: 40px 0;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .features li {
+            font-size: 16px;
+            margin-bottom: 20px;
+            padding: 15px 20px 15px 50px;
+            position: relative;
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .features li:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .features li::before {
+            content: "✓";
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 20px;
+            text-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+        }
+
+        .stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+            animation: fadeInUp 0.8s ease-out 0.9s both;
+        }
+
+        .stat-item {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: var(--shadow-heavy);
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+            position: relative;
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .logo::before {
+            content: "💼";
+            font-size: 40px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .container h1 {
+            color: var(--text-primary);
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .container .subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            color: #667eea;
+            font-size: 20px;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 18px 20px 18px 55px;
+            border: 2px solid #e1e5e9;
+            border-radius: 16px;
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #fafbfc;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+        }
+
+        input[type="number"]:focus + .input-icon {
+            color: #667eea;
+            transform: scale(1.1);
+        }
+
+        input[type="number"]::placeholder {
+            color: #aaa;
+            font-weight: 400;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #5a67d8, #6b46c1);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        .divider {
+            margin: 30px 0;
+            position: relative;
+            text-align: center;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #ddd, transparent);
+        }
+
+        .divider span {
+            background: var(--glass-bg);
+            padding: 0 20px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .register-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 15px 30px;
+            border: 2px solid #667eea;
+            border-radius: 16px;
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: #667eea;
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .register-link:hover::before {
+            width: 100%;
+        }
+
+        .register-link:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: floatAround 20s infinite linear;
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            left: 80%;
+            animation-delay: -7s;
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 80%;
+            left: 20%;
+            animation-delay: -14s;
+        }
+
+        @keyframes floatAround {
+            0% { transform: translateX(0) translateY(0) rotate(0deg); }
+            25% { transform: translateX(100px) translateY(-100px) rotate(90deg); }
+            50% { transform: translateX(0) translateY(-200px) rotate(180deg); }
+            75% { transform: translateX(-100px) translateY(-100px) rotate(270deg); }
+            100% { transform: translateX(0) translateY(0) rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .notification {
+            position: fixed;
+            top: -100px;
+            right: 20px;
+            background: var(--accent-color);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(74, 222, 128, 0.4);
+            z-index: 1000;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 350px;
+        }
+
+        .notification.show {
+            top: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-section {
+                gap: 40px;
+            }
+            
+            .content-left {
+                padding: 40px 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px 0;
+                gap: 40px;
+            }
+            
+            .content-left {
+                padding: 20px;
+                max-width: none;
+            }
+            
+            .container {
+                padding: 40px 30px;
+                margin: 0 10px;
+            }
+
+            .stats {
+                justify-content: center;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .logo {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .logo::before {
+                font-size: 32px;
+            }
+
+            .stats {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
 </head>
 <body>
-    {% if mensaje %}
-        <script>
-            alert("{{mensaje}}")
-        </script>
-    {% endif %}
+    <div class="floating-elements">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+    </div>
 
-    <h1>Bienvenido a nuestra calculadora pensional</h1>
-    <form method="POST" action="/acceder">
-        <input type="number" name = "cedula" id = "cedula" placeholder = "Cedula">
-        <button type="submit">Entrar</button>
-        <a href = "/pagina_registro">Registrate</a>
-    </form>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <div class="hero-section">
+        <div class="content-left">
+            <h1>Liquidación de Nómina</h1>
+            <p class="subtitle">Sistema integral y avanzado para calcular y gestionar liquidaciones laborales de manera precisa, eficiente y completamente automatizada</p>
+            
+
+        </div>
+
+        <div class="container">
+            <div class="logo"></div>
+            <h1>Acceder al Sistema</h1>
+            <p class="subtitle">Ingresa tu número de cédula para comenzar con la liquidación de nómina</p>
+            
+            <form method="POST" action="/acceder" id="loginForm">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="number" name="cedula" id="cedula" placeholder="Número de cédula" required>
+                        <span class="input-icon">👤</span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary">Ingresar al Sistema</button>
+            </form>
+            
+            <div class="divider">
+                <span>¿Primera vez aquí?</span>
+            </div>
+            
+            <a href="/pagina_registro" class="register-link" id="registerLink">Crear cuenta nueva</a>
+        </div>
+    </div>
+
+    <script>
+        // Form validation and submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const cedulaInput = document.getElementById('cedula');
+            const cedula = cedulaInput.value.trim();
+            
+            if (!cedula) {
+                e.preventDefault();
+                showNotification('Por favor ingresa tu número de cédula', 'error');
+                cedulaInput.focus();
+                return;
+            }
+            
+            if (cedula.length < 6 || cedula.length > 12) {
+                e.preventDefault();
+                showNotification('El número de cédula debe tener entre 6 y 12 dígitos', 'error');
+                cedulaInput.focus();
+                return;
+            }
+            
+            // Show loading and let the form submit naturally
+            showLoading();
+            showNotification('Validando credenciales...', 'info');
+        });
+
+        // Register link handler - Remove preventDefault to allow natural navigation
+        document.getElementById('registerLink').addEventListener('click', function(e) {
+            showNotification('Redirigiendo a página de registro...', 'info');
+        });
+
+        // Input animations and validation
+        const cedulaInput = document.getElementById('cedula');
+        
+        cedulaInput.addEventListener('input', function(e) {
+            // Only allow numbers
+            this.value = this.value.replace(/[^0-9]/g, '');
+            
+            // Real-time validation feedback
+            if (this.value.length > 0 && (this.value.length < 6 || this.value.length > 12)) {
+                this.style.borderColor = '#ef4444';
+            } else if (this.value.length >= 6) {
+                this.style.borderColor = '#10b981';
+            } else {
+                this.style.borderColor = '#e1e5e9';
+            }
+        });
+
+        cedulaInput.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+        });
+
+        cedulaInput.addEventListener('blur', function() {
+            this.parentElement.classList.remove('focused');
+        });
+
+        // Utility functions
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            
+            // Set color based on type
+            const colors = {
+                success: '#4ade80',
+                error: '#ef4444',
+                info: '#3b82f6',
+                warning: '#f59e0b'
+            };
+            
+            notification.style.background = colors[type] || colors.success;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Enhanced keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target !== document.getElementById('cedula')) {
+                document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Add some interactive particle effects on mouse move
+        let mouseX = 0, mouseY = 0;
+        
+        document.addEventListener('mousemove', function(e) {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Create subtle following effect for floating shapes
+            const shapes = document.querySelectorAll('.floating-shape');
+            shapes.forEach((shape, index) => {
+                const speed = (index + 1) * 0.0005;
+                const x = (mouseX - window.innerWidth / 2) * speed;
+                const y = (mouseY - window.innerHeight / 2) * speed;
+                
+                shape.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+
+        // Initialize page
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '1';
+            showNotification('Sistema de liquidación de nómina cargado correctamente', 'success');
+        });
+    </script>
 </body>
 </html>

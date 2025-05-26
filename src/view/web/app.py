@@ -3,7 +3,6 @@ import sys
 sys.path.append(".")
 
 from flask import Flask
-from flask import render_template, request
 from src.view.web import plano
 
 app = Flask(__name__)

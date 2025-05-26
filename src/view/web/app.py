@@ -3,7 +3,7 @@ import sys
 sys.path.append(".")
 
 from flask import Flask
-from src.view.web import plano
+from . import plano 
 
 app = Flask(__name__)
 app.register_blueprint(plano.blueprint)

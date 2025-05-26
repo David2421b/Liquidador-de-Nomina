@@ -7,7 +7,7 @@ from model.calculo_nomina import Nomina
 from model.clase_datos_obtenidos import DatosObtenidos
 
 from flask import Blueprint, render_template, request
-blueprint = Blueprint("vista", __name__, "templates")
+blueprint = Blueprint("vista", __name__,  template_folder="templates")
 
 @blueprint.route("/")
 def index():

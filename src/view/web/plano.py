@@ -2,7 +2,7 @@ import sys
 
 sys.path.append(".")
 
-from ...controller.nomina_controller import NominaController
+from controller.nomina_controller import NominaController
 from model.calculo_nomina import Nomina
 from model.clase_datos_obtenidos import DatosObtenidos
 

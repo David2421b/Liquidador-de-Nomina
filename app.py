@@ -1,4 +1,4 @@
-from src.view.web import app
+from src.view.web import app_2
 
 if __name__ == "__main__":
-    app.app.run()
+    app_2.app.run()

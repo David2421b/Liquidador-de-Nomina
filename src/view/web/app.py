@@ -11,4 +11,4 @@ app.register_blueprint(plano.blueprint)
 
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run()

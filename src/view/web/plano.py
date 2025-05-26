@@ -1,3 +1,6 @@
+import sys
+
+sys.path.append(".")
 
 from src.controller.nomina_controller import NominaController
 from model.calculo_nomina import Nomina

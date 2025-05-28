@@ -651,7 +651,7 @@
                 alert("{{ mensaje }}");
             </script>
         {% endif %}
-        
+
     <script>
         class ValidadorFormulario {
             constructor() {
@@ -801,22 +801,21 @@
                 this.mostrarExito(campo);
                 return true;
             }
-
-            validarSalarioBase(salario, campo) {
+            validarsalariobase(salario, campo) {
                 if (!salario) {
-                    this.mostrarError(campo, "Ingrese su salario en el campo de salario base.");
+                    this.mostrarError(campo, "Ingrese su salario en el dominio de salario base.");
                     return false;
                 }
 
                 const salarioNum = parseFloat(salario);
 
                 if (salarioNum < 0) {
-                    this.mostrarError(campo, "El salario base del empleado no puede ser negativo (Art. 127 CST)");
+                    this.mostrarError(campo, "El salario base del empleado no puede ser negativo ");
                     return false;
                 }
 
                 if (salarioNum < this.salarioMinimo) {
-                    this.mostrarError(campo, `El salario base no puede ser menor al salario mínimo vigente ($${this.salarioMinimo}).`);
+                    this.mostrarError(campo, `El salario base no puede ser menor al salario mínimo vigente anual ($${this.salarioMinimo}).`);
                     return false;
                 }
 

@@ -7,7 +7,11 @@
 
 ## 🌐 Sitio Web Desplegado
 - [Acceder al Sistema de Nómina](https://liquidador-de-nomina-1.onrender.com)
-
+  
+## Autores
+- Miguel Ángel Guarnizo.
+- David Hernandez Mejia.
+  
 ## Instalación
 
 ### Instalación de Kivy
@@ -321,8 +325,15 @@ Liquidador-de-Nomina/
 │   │   ├── console
 │   │   │   ├── __init__.py
 │   │   │   └── main.py
-│   │   └── web
 │   └── __init__.py
+├── web
+│   │   ├── 
+│   │   ├── templates
+│   │   │   ├── index.html
+│   │   │   ├── panel.html
+│   │   │   ├── registrar.html
+│   │   ├── __init__.py
+│   │   └── plano.py
 ├── test
 │   ├── test_nomina.py
 │   └── test_nomina_DB.py

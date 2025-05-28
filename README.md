@@ -11,7 +11,21 @@
 ## Autores
 - Miguel Ángel Guarnizo.
 - David Hernandez Mejia.
-  
+
+## Ejecución de la aplicación web 🌐
+1. Desde la raíz del proyecto, ejecuta el siguiente comand
+```
+  python app.py
+```
+2. Verás en consola un mensaje de confirmación similar al siguiente:
+```
+  - Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+  - Restarting with stat
+  - Debugger is active!
+  - Debugger PIN: XXX-XXX-XXX
+```
+3. Accedes por medio del http generado arriba.
+4. Antes que nada dar click en "crear tablas" para crear las respectivas tablas en la base de datos  
 ## Instalación
 
 ### Instalación de Kivy

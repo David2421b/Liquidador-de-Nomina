@@ -606,7 +606,11 @@
             <a href="/pagina_registro" class="register-link" id="registerLink">Crear cuenta nueva</a>
         </div>
     </div>
-
+    {% if mensaje %}
+        <script>
+            alert("{{ mensaje }}");
+        </script>
+    {% endif %}
     <script>
         // Form validation and submission
         document.getElementById('loginForm').addEventListener('submit', function(e) {

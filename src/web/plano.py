@@ -3,8 +3,8 @@ import sys
 sys.path.append(".")
 
 from src.controller.nomina_controller import NominaController
-from model.calculo_nomina import Nomina
-from model.clase_datos_obtenidos import DatosObtenidos
+from src.model.calculo_nomina import Nomina
+from src.model.clase_datos_obtenidos import DatosObtenidos
 
 from flask import Blueprint, render_template, request
 blueprint = Blueprint("vista", __name__,  template_folder="templates")

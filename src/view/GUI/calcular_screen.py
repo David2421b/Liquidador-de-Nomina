@@ -236,5 +236,5 @@ class CalcularNominaScreen(Screen):
 
 if __name__ == '__main__':
     # Si se ejecuta este archivo directamente, iniciar la aplicación
-    from app import NominaApp
+    from web.app import NominaApp
     NominaApp().run()

@@ -326,8 +326,7 @@ Liquidador-de-Nomina/
 │   │   │   ├── __init__.py
 │   │   │   └── main.py
 │   └── __init__.py
-├── web
-│   │   ├── 
+├── web 
 │   │   ├── templates
 │   │   │   ├── index.html
 │   │   │   ├── panel.html

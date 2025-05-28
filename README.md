@@ -5,7 +5,7 @@
 - Santiago Alcaraz Durango
 - Luis Carlos Guerra Herrera
 
-## 🌐 Sitio Web Desplegado
+## 🌐 Sitio Web 
 - [Acceder al Sistema de Nómina](https://liquidador-de-nomina-1.onrender.com)
   
 ## Autores
@@ -392,6 +392,11 @@ Aplicación gráfica desarrollada en **Python + Kivy** para calcular la nómina 
 
 - Python 3.7 o superior
 - Kivy (`pip install kivy`)
+  
+## Requisitos web
+-  flask == 3.1.1
+-  Werkzeug == 3.1.3
+-  psycopg2==2.9.10
 ---
 
 ## Instrucciones para ejecutar

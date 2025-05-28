@@ -646,11 +646,12 @@
         </div>
     </div>
 
-    {% if mensaje %}
-        <script>
-            alert("{{ mensaje }}");
-        </script>
-    {% endif %}
+        {% if mensaje %}
+            <script>
+                alert("{{ mensaje }}");
+            </script>
+        {% endif %}
+        
     <script>
         class ValidadorFormulario {
             constructor() {

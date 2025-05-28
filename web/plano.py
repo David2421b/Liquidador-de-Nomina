@@ -79,3 +79,14 @@ def acceder():
             
         except Exception as e:
                 return render_template("index.html", mensaje = f"{e}")
+
+@blueprint.route("/eliminar_usuario", methods = ["GET", "POST"])
+def eliminar_usuario():
+    if request.method == "POST":
+        try:
+            cedula = str(request.form["cedula"])
+            obtendio = NominaController.EliminarEmpleadoPorCedula(cedula)
+            return render_template("index.html", mensaje = "Usuario eliminado con exito")
+        
+        except Exception as e:
+            return render_template("index.html", mensaje = f"{e}")

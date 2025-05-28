@@ -566,6 +566,8 @@ class NominaController:
         
         except Exception as e:
             cursor.connection.rollback()
+    
+
 
         
     @staticmethod
@@ -599,8 +601,10 @@ class NominaController:
                 raise EmpleadoNoExistenteError(cedula)
 
             # Eliminar registros relacionados en otras tablas
-            cursor.execute("DELETE FROM horas_extras WHERE id_empleado = %s", (cedula,))
             cursor.execute("DELETE FROM prestamos WHERE id_empleado = %s", (cedula,))
+            cursor.execute("DELETE FROM horas_extras WHERE id_empleado = %s", (cedula,))
+            cursor.execute("DELETE FROM datos_obtenidos WHERE cedula = %s", (cedula,))
+            cursor.execute("DELETE FROM empleados WHERE cedula = %s", (cedula,))
             # Eliminar el empleado
             cursor.execute("DELETE FROM empleados WHERE cedula = %s", (cedula,))
             cursor.connection.commit()
